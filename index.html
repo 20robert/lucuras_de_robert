@@ -9,22 +9,20 @@
         /* --- General Styles --- */
         body {
             font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
-            overflow: hidden;
+            padding: 0;
             position: relative;
             background-color: #e6f0fa;
             color: #2d3436;
             text-align: center;
             transition: background-color 1.5s ease;
+            /* REMOVIDO: overflow: hidden - esto bloqueaba el scroll */
+            min-height: 100vh;
         }
 
         /* --- Dynamic Background with Particles --- */
         .bg-gradient-overlay {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -41,7 +39,7 @@
         }
 
         .particle {
-            position: absolute;
+            position: fixed;
             width: 6px;
             height: 6px;
             background: rgba(255, 255, 255, 0.8);
@@ -59,13 +57,13 @@
         /* --- Screen Transitions --- */
         .screen {
             width: 100%;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: absolute;
-            top: 0;
-            left: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
             transition: opacity 0.8s ease, transform 0.8s ease;
             z-index: 10;
         }
@@ -73,6 +71,9 @@
         .screen.hidden {
             opacity: 0;
             pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
             transform: translateY(50vh);
         }
 
@@ -82,18 +83,19 @@
             transform: translateY(0);
         }
 
-        /* --- Portal Screen Styles (Unchanged) --- */
+        /* --- Portal Screen Styles --- */
         #portal-screen {
             background: rgba(178, 224, 254, 0.3);
         }
 
         .portal-container {
             background-color: rgba(255, 255, 255, 0.95);
-            padding: 50px 30px;
+            padding: 40px 20px;
             border-radius: 25px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            max-width: 90%;
-            width: 500px;
+            max-width: 95%;
+            width: 100%;
+            max-width: 500px;
             box-sizing: border-box;
             animation: portalFadeIn 1.5s ease-out;
         }
@@ -103,10 +105,21 @@
             to { opacity: 1; transform: scale(1); }
         }
 
+        .portal-container h1 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .portal-container p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
         .portal-effect {
             position: relative;
-            width: 150px;
-            height: 150px;
+            width: 120px;
+            height: 120px;
             margin: 30px auto 0;
             border-radius: 50%;
             background: radial-gradient(circle, #8338ec 0%, #3a0ca3 100%);
@@ -126,10 +139,10 @@
         .portal-button {
             background-color: #ffbe0b;
             color: #333;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border: none;
             border-radius: 40px;
-            font-size: 1.3em;
+            font-size: 1.1em;
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
@@ -143,13 +156,19 @@
         }
 
         /* --- Main Kit Screen Styles --- */
+        #main-kit-screen {
+            align-items: flex-start;
+            padding-top: 40px;
+        }
+
         #main-kit-screen .card {
             background: linear-gradient(135deg, #81ecec, #ff7675);
-            padding: 40px 30px;
+            padding: 30px 20px;
             border-radius: 20px;
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-            max-width: 90%;
-            width: 650px;
+            max-width: 95%;
+            width: 100%;
+            max-width: 650px;
             box-sizing: border-box;
             border: 2px solid rgba(255, 255, 255, 0.6);
             animation: cardPop 0.5s ease-out;
@@ -162,7 +181,7 @@
 
         #main-kit-screen h1 {
             color: #2d3436;
-            font-size: 2.8em;
+            font-size: 2.2em;
             margin-bottom: 15px;
             position: relative;
             display: inline-block;
@@ -183,7 +202,7 @@
         }
 
         #initialKitMessage {
-            font-size: 1.2em;
+            font-size: 1.1em;
             line-height: 1.7;
             color: #2d3436;
             margin-bottom: 25px;
@@ -197,16 +216,15 @@
 
         .button-container {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
+            flex-direction: column;
+            gap: 15px;
             margin-bottom: 30px;
         }
 
         .action-button {
             background: linear-gradient(45deg, #ff6b6b, #ff8e53);
             color: white;
-            padding: 15px 30px;
+            padding: 15px 25px;
             border: none;
             border-radius: 50px;
             font-size: 1.1em;
@@ -215,10 +233,11 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             transform: perspective(500px) translateZ(0);
+            width: 100%;
         }
 
         .action-button:hover {
-            transform: perspective(500px) translateZ(10px) rotate(2deg);
+            transform: perspective(500px) translateZ(10px) rotate(1deg);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             background: linear-gradient(45deg, #ff8e53, #ff6b6b);
         }
@@ -235,9 +254,9 @@
             background: rgba(255, 255, 255, 0.85);
             border: 2px solid #81ecec;
             border-radius: 20px;
-            padding: 30px;
+            padding: 25px;
             margin-top: 25px;
-            min-height: 150px;
+            min-height: 120px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -262,10 +281,11 @@
         }
 
         #dynamicContent {
-            font-size: 1.4em;
+            font-size: 1.2em;
             color: #2d3436;
             margin-bottom: 15px;
             transition: all 0.4s ease;
+            text-align: center;
         }
 
         .next-button {
@@ -283,7 +303,7 @@
 
         .next-button:hover {
             background: linear-gradient(45deg, #a29bfe, #6c5ce7);
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         .next-button.hidden {
@@ -299,7 +319,7 @@
 
         /* --- Confetti Styles --- */
         .confetti {
-            position: absolute;
+            position: fixed;
             width: 10px;
             height: 10px;
             background: #ffd700;
@@ -328,6 +348,101 @@
             font-size: 14px;
             background: transparent;
             color: #f1c40f;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .portal-container {
+                padding: 30px 15px;
+                margin: 10px;
+            }
+
+            .portal-container h1 {
+                font-size: 1.8em;
+            }
+
+            .portal-container p {
+                font-size: 1em;
+            }
+
+            .portal-effect {
+                width: 100px;
+                height: 100px;
+            }
+
+            .portal-button {
+                font-size: 1em;
+                padding: 10px 20px;
+            }
+
+            #main-kit-screen h1 {
+                font-size: 1.8em;
+            }
+
+            #main-kit-screen .card {
+                padding: 25px 15px;
+                margin: 10px;
+            }
+
+            #initialKitMessage {
+                font-size: 1em;
+            }
+
+            .action-button {
+                font-size: 1em;
+                padding: 12px 20px;
+            }
+
+            #dynamicContent {
+                font-size: 1.1em;
+            }
+
+            .next-button {
+                font-size: 1em;
+                padding: 10px 20px;
+            }
+
+            .signature {
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .screen {
+                padding: 15px;
+            }
+
+            .portal-container h1 {
+                font-size: 1.6em;
+            }
+
+            #main-kit-screen h1 {
+                font-size: 1.6em;
+            }
+
+            .portal-effect {
+                width: 80px;
+                height: 80px;
+            }
+
+            .portal-button {
+                font-size: 0.9em;
+                padding: 8px 16px;
+            }
+
+            #dynamicContent {
+                font-size: 1em;
+            }
+
+            .action-button {
+                font-size: 0.9em;
+                padding: 10px 15px;
+            }
+
+            .next-button {
+                font-size: 0.9em;
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
@@ -397,87 +512,81 @@
             const contents = {
                 success: [
                     "¡Lo vas a lograr con creces! Toda tu dedicación y esfuerzo van a brillar en cada examen. ¡Confía en ti al máximo! 💪",
-                    "Recuerda que cada paso que has dado te ha preparado para este momento. ¡Tienes la inteligencia y la capacidad** para superar cualquier desafío! ✨",
-                    "No solo vas a aprobar, ¡vas a obresalir! Relájate, respira profundo y demuestra todo lo que sabes. ¡Eres imparable! 🚀",
+                    "Recuerda que cada paso que has dado te ha preparado para este momento. ¡Tienes la inteligencia y la capacidad para superar cualquier desafío! ✨",
+                    "No solo vas a aprobar, ¡vas a sobresalir! Relájate, respira profundo y demuestra todo lo que sabes. ¡Eres imparable! 🚀",
                     "Imagina esa increíble sensación de satisfacción al terminar. ¡Esa es tu recompensa por todo tu arduo trabajo! ¡A por todas, campeona! 🌟",
                     "¡Este es tu momento para demostrar de qué estás hecha! Te envío toda la buena energía y la calma para que cada respuesta fluya. ¡Mucha, mucha suerte! ✅",
-                    "¡Eres una genio en potencia**! Visualiza tu éxito, mantén la calma y verás cómo superas cualquier obstáculo. ¡Tú eres capaz! 🧠",
-                    "Cada pregunta es una oportunidad para **demostrar tu valía. ¡No te rindas, persiste y triunfa! ¡El éxito te espera al final del camino! 🏆",
+                    "¡Eres una genio en potencia! Visualiza tu éxito, mantén la calma y verás cómo superas cualquier obstáculo. ¡Tú eres capaz! 🧠",
+                    "Cada pregunta es una oportunidad para demostrar tu valía. ¡No te rindas, persiste y triunfa! ¡El éxito te espera al final del camino! 🏆",
                     "¡No existe nada imposible cuando tienes la determinación que tú posees! Esta semana decisiva será el testimonio de tu grandeza. ¡Confía en tu poder! 💫",
-
                     "Recuerda: lo imposible es solo una palabra, tú tienes la llave para abrir cualquier puerta. ¡Esta semana decisiva será tu momento de brillar! ✨",
-
                     "¡Para ti no hay límites ni barreras imposibles de romper! Cada desafío de esta semana decisiva será una oportunidad para demostrar tu fortaleza. ¡Adelante, guerrera! 🔥",
-
                     "Lo que otros llaman imposible, tú lo llamas oportunidad. Esta semana decisiva será la prueba de que cuando te lo propones, todo es posible. ¡Confía en ti! 🌟",
-
                     "¡Imposible no está en tu vocabulario! Esta semana decisiva será el escenario perfecto para que demuestres que con pasión y esfuerzo, todo se puede lograr. ¡Eres imparable! 🚀",
-
                     "Cada obstáculo aparentemente imposible se desvanece ante tu determinación. Esta semana decisiva será tu momento de gloria. ¡Tú tienes el poder! ⚡",
-
                     "¡Borra la palabra 'imposible' de tu mente! Esta semana decisiva será la confirmación de que con tu talento y dedicación, puedes conquistar cualquier meta. ¡Eres extraordinaria! 🏆"
                 ],
                 jokes: [
-                {
-                    setup: "¡Prepárate para reírte!",
-                    punchline: "¿Qué le dice un semáforo a otro? ¡No me mires que me estoy cambiando!"
-                },
-                {
-                    setup: "Un chiste para mentes binarias:",
-                    punchline: "¿Por qué los programadores prefieren el modo oscuro? ¡Porque la luz atrae los 'bugs'!"
-                },
-                {
-                    setup: "Un chiste que entenderá un trabajador social:",
-                    punchline: "¿Cuál es el superhéroe favorito de un trabajador social? ¡Captain 'Capacity Building'!"
-                },
-                {
-                    setup: "¡Este te va a sacar una carcajada!",
-                    punchline: "¿Por qué el astronauta rompió con su novia? ¡Porque necesitaba espacio!"
-                },
-                {
-                    setup: "Un chiste para alegrarte el día:",
-                    punchline: "¿Qué hace una abeja en el gimnasio? ¡Zum-ba!"
-                },
-                {
-                    setup: "¡Cuidado, este es muy bueno!",
-                    punchline: "¿Por qué los pájaros no usan WhatsApp? ¡Porque ya tienen Twitter!"
-                },
-                {
-                    setup: "Uno más para mantener la sonrisa:",
-                    punchline: "¿Qué le dice una impresora a otra? ¿Esa hoja es tuya o es una copia?"
-                },
-                {
-                    setup: "¡Este te va a gustar!",
-                    punchline: "¿Por qué los programadores odian la naturaleza? ¡Porque tiene demasiados bugs y no hay documentación!"
-                },
-                {
-                    setup: "Un chiste de sistemas:",
-                    punchline: "¿Cuál es la diferencia entre un programador y un usuario? ¡El programador piensa que su código es perfecto, el usuario sabe que no funciona!"
-                },
-                {
-                    setup: "¡Prepárate para reírte!",
-                    punchline: "¿Por qué los trabajadores sociales son tan buenos en fiestas? ¡Porque saben cómo crear redes de apoyo!"
-                },
-                {
-                    setup: "Chiste de base de datos:",
-                    punchline: "¿Por qué rompieron el programador y la base de datos? ¡Porque no había relación!"
-                },
-                {
-                    setup: "¡Este es buenísimo!",
-                    punchline: "¿Qué hace un trabajador social en un concierto? ¡Evalúa la dinámica grupal!"
-                },
-                {
-                    setup: "Un clásico que no falla:",
-                    punchline: "¿Por qué los programadores confunden Halloween con Navidad? ¡Porque Oct 31 = Dec 25!"
-                },
-                {
-                    setup: "¡Cuidado, este es muy bueno!",
-                    punchline: "¿Cómo llama un programador a su perro? ¡JavaScript! Porque siempre está corriendo pero nunca hace lo que debe."
-                },
-                {
-                    setup: "Uno más para mantener la sonrisa:",
-                    punchline: "¿Por qué los trabajadores sociales son buenos en matemáticas? ¡Porque saben sumar esfuerzos y restar problemas!"
-                }
+                    {
+                        setup: "¡Prepárate para reírte!",
+                        punchline: "¿Qué le dice un semáforo a otro? ¡No me mires que me estoy cambiando!"
+                    },
+                    {
+                        setup: "Un chiste para mentes binarias:",
+                        punchline: "¿Por qué los programadores prefieren el modo oscuro? ¡Porque la luz atrae los 'bugs'!"
+                    },
+                    {
+                        setup: "Un chiste que entenderá un trabajador social:",
+                        punchline: "¿Cuál es el superhéroe favorito de un trabajador social? ¡Captain 'Capacity Building'!"
+                    },
+                    {
+                        setup: "¡Este te va a sacar una carcajada!",
+                        punchline: "¿Por qué el astronauta rompió con su novia? ¡Porque necesitaba espacio!"
+                    },
+                    {
+                        setup: "Un chiste para alegrarte el día:",
+                        punchline: "¿Qué hace una abeja en el gimnasio? ¡Zum-ba!"
+                    },
+                    {
+                        setup: "¡Cuidado, este es muy bueno!",
+                        punchline: "¿Por qué los pájaros no usan WhatsApp? ¡Porque ya tienen Twitter!"
+                    },
+                    {
+                        setup: "Uno más para mantener la sonrisa:",
+                        punchline: "¿Qué le dice una impresora a otra? ¿Esa hoja es tuya o es una copia?"
+                    },
+                    {
+                        setup: "¡Este te va a gustar!",
+                        punchline: "¿Por qué los programadores odian la naturaleza? ¡Porque tiene demasiados bugs y no hay documentación!"
+                    },
+                    {
+                        setup: "Un chiste de sistemas:",
+                        punchline: "¿Cuál es la diferencia entre un programador y un usuario? ¡El programador piensa que su código es perfecto, el usuario sabe que no funciona!"
+                    },
+                    {
+                        setup: "¡Prepárate para reírte!",
+                        punchline: "¿Por qué los trabajadores sociales son tan buenos en fiestas? ¡Porque saben cómo crear redes de apoyo!"
+                    },
+                    {
+                        setup: "Chiste de base de datos:",
+                        punchline: "¿Por qué rompieron el programador y la base de datos? ¡Porque no había relación!"
+                    },
+                    {
+                        setup: "¡Este es buenísimo!",
+                        punchline: "¿Qué hace un trabajador social en un concierto? ¡Evalúa la dinámica grupal!"
+                    },
+                    {
+                        setup: "Un clásico que no falla:",
+                        punchline: "¿Por qué los programadores confunden Halloween con Navidad? ¡Porque Oct 31 = Dec 25!"
+                    },
+                    {
+                        setup: "¡Cuidado, este es muy bueno!",
+                        punchline: "¿Cómo llama un programador a su perro? ¡JavaScript! Porque siempre está corriendo pero nunca hace lo que debe."
+                    },
+                    {
+                        setup: "Uno más para mantener la sonrisa:",
+                        punchline: "¿Por qué los trabajadores sociales son buenos en matemáticas? ¡Porque saben sumar esfuerzos y restar problemas!"
+                    }
                 ]
             };
 
@@ -498,7 +607,6 @@
                     contentType = button.dataset.type;
                     initialKitMessage.style.display = 'none';
                     mainKitTitle.textContent = contentType === 'success' ? '¡Tu Dosis de Ánimo!' : '¡Ríete a Carcajadas!';
-                    mainKitTitle.style.setProperty('--emoji', contentType === 'success' ? '🌟' : '😂');
                     
                     resultDisplay.classList.remove('hidden');
                     resultDisplay.classList.add('visible');
@@ -525,7 +633,7 @@
                     setTimeout(() => {
                         const item = currentContent[currentPhraseIndex];
                         if (contentType === 'jokes') {
-                            dynamicContent.innerHTML = `<p>${item.setup}</p><p style="margin-top: 15px; font-weight: bold; font-size: 1.5em;">${item.punchline}</p>`;
+                            dynamicContent.innerHTML = `<p>${item.setup}</p><p style="margin-top: 15px; font-weight: bold; font-size: 1.2em;">${item.punchline}</p>`;
                         } else {
                             dynamicContent.innerHTML = `<p>${item}</p>`;
                         }
