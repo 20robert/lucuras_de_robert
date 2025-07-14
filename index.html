@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Una Sorpresa Extraordinaria!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- General Styles --- */
+        body {
+            font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+            background-color: #e6f0fa;
+            color: #2d3436;
+            text-align: center;
+            transition: background-color 1.5s ease;
+        }
+
+        /* --- Dynamic Background with Particles --- */
+        .bg-gradient-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.6), rgba(253, 121, 168, 0.6));
+            animation: gradientAnim 12s ease infinite alternate;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        @keyframes gradientAnim {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: float 10s infinite linear;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(1); opacity: 0.4; }
+            100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+        }
+
+        /* --- Screen Transitions --- */
+        .screen {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            z-index: 10;
+        }
+
+        .screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(50vh);
+        }
+
+        .screen.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+
+        /* --- Portal Screen Styles (Unchanged) --- */
+        #portal-screen {
+            background: rgba(178, 224, 254, 0.3);
+        }
+
+        .portal-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 50px 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            width: 500px;
+            box-sizing: border-box;
+            animation: portalFadeIn 1.5s ease-out;
+        }
+
+        @keyframes portalFadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .portal-effect {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 30px auto 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, #8338ec 0%, #3a0ca3 100%);
+            box-shadow: 0 0 30px #8338ec, 0 0 60px #3a0ca3;
+            animation: pulse 2s infinite alternate;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); box-shadow: 0 0 40px #8338ec, 0 0 80px #3a0ca3; }
+        }
+
+        .portal-button {
+            background-color: #ffbe0b;
+            color: #333;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .portal-button:hover {
+            background-color: #fb8500;
+            transform: scale(1.05);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- Main Kit Screen Styles --- */
+        #main-kit-screen .card {
+            background: linear-gradient(135deg, #81ecec, #ff7675);
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            width: 650px;
+            box-sizing: border-box;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            animation: cardPop 0.5s ease-out;
+        }
+
+        @keyframes cardPop {
+            from { transform: scale(0.9); opacity: 0.7; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        #main-kit-screen h1 {
+            color: #2d3436;
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        #main-kit-screen h1::after {
+            content: '🌟';
+            font-size: 0.7em;
+            position: absolute;
+            margin-left: 10px;
+            animation: emojiWiggle 2s infinite;
+        }
+
+        @keyframes emojiWiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(10deg); }
+            75% { transform: rotate(-10deg); }
+        }
+
+        #initialKitMessage {
+            font-size: 1.2em;
+            line-height: 1.7;
+            color: #2d3436;
+            margin-bottom: 25px;
+            animation: fadeInText 1s ease;
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .action-button {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transform: perspective(500px) translateZ(0);
+        }
+
+        .action-button:hover {
+            transform: perspective(500px) translateZ(10px) rotate(2deg);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #ff8e53, #ff6b6b);
+        }
+
+        .action-button[data-type="jokes"] {
+            background: linear-gradient(45deg, #00cec9, #0984e3);
+        }
+
+        .action-button[data-type="jokes"]:hover {
+            background: linear-gradient(45deg, #0984e3, #00cec9);
+        }
+
+        .result-display {
+            background: rgba(255, 255, 255, 0.85);
+            border: 2px solid #81ecec;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 25px;
+            min-height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: all 0.6s ease;
+            transform: scale(0.9);
+            opacity: 0;
+        }
+
+        .result-display.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .result-display.hidden {
+            opacity: 0;
+            height: 0;
+            padding: 0;
+            margin: 0;
+            border: none;
+            pointer-events: none;
+        }
+
+        #dynamicContent {
+            font-size: 1.4em;
+            color: #2d3436;
+            margin-bottom: 15px;
+            transition: all 0.4s ease;
+        }
+
+        .next-button {
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .next-button:hover {
+            background: linear-gradient(45deg, #a29bfe, #6c5ce7);
+            transform: scale(1.1);
+        }
+
+        .next-button.hidden {
+            display: none;
+        }
+
+        .signature {
+            margin-top: 30px;
+            font-style: italic;
+            color: #636e72;
+            font-size: 0.95em;
+        }
+
+        /* --- Confetti Styles --- */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .confetti.square { border-radius: 0; }
+        .confetti.triangle {
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 10px solid;
+            background: transparent;
+        }
+        .confetti.heart::before {
+            content: '❤️';
+            font-size: 14px;
+            background: transparent;
+        }
+        .confetti.star::before {
+            content: '⭐';
+            font-size: 14px;
+            background: transparent;
+            color: #f1c40f;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient-overlay"></div>
+
+    <div id="portal-screen" class="screen active">
+        <div class="portal-container">
+            <h1>¡Te tengo una sorpresa!</h1>
+            <p>Haz clic para entrar al portal y descubrir un mensaje especial.</p>
+            <div class="portal-effect">
+                <button id="enter-portal-button" class="portal-button">ENTRAR</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-kit-screen" class="screen hidden">
+        <div class="card">
+            <h1>¡Aquí está tu Dosis de Ánimo!</h1>
+            <p id="initialKitMessage">Sé que tienes una semana importante con tus exámenes. Quería enviarte algo para hacer tu día un poco más ligero y darte un empujón de energía.</p>
+            
+            <div class="button-container">
+                <button class="action-button" data-type="success">Estos son para tí</button>
+                <button class="action-button" data-type="jokes">Chistes Graciosos 😂</button>
+            </div>
+
+            <div id="resultDisplay" class="result-display hidden">
+                <p id="dynamicContent"></p>
+                <button id="nextPhraseButton" class="next-button hidden">Siguiente Frase</button>
+            </div>
+
+            <p class="signature">- Alguien que te desea lo mejor</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Crear partículas de fondo
+            function createParticles(count) {
+                for (let i = 0; i < count; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    particle.style.left = `${Math.random() * 100}vw`;
+                    particle.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                    particle.style.animationDelay = `${Math.random() * 5}s`;
+                    document.body.appendChild(particle);
+                    particle.addEventListener('animationend', () => particle.remove());
+                }
+            }
+            createParticles(20);
+
+            // Elementos del DOM
+            const portalScreen = document.getElementById('portal-screen');
+            const mainKitScreen = document.getElementById('main-kit-screen');
+            const enterPortalButton = document.getElementById('enter-portal-button');
+            const actionButtons = document.querySelectorAll('.action-button');
+            const resultDisplay = document.getElementById('resultDisplay');
+            const dynamicContent = document.getElementById('dynamicContent');
+            const nextPhraseButton = document.getElementById('nextPhraseButton');
+            const initialKitMessage = document.getElementById('initialKitMessage');
+            const mainKitTitle = document.querySelector('#main-kit-screen h1');
+
+            let currentPhraseIndex = 0;
+            let currentContent = [];
+            let contentType = '';
+
+            const contents = {
+                success: [
+                    "¡Lo vas a lograr con creces! Toda tu dedicación y esfuerzo van a brillar en cada examen. ¡Confía en ti al máximo! 💪",
+                    "Recuerda que cada paso que has dado te ha preparado para este momento. ¡Tienes la inteligencia y la capacidad** para superar cualquier desafío! ✨",
+                    "No solo vas a aprobar, ¡vas a obresalir! Relájate, respira profundo y demuestra todo lo que sabes. ¡Eres imparable! 🚀",
+                    "Imagina esa increíble sensación de satisfacción al terminar. ¡Esa es tu recompensa por todo tu arduo trabajo! ¡A por todas, campeona! 🌟",
+                    "¡Este es tu momento para demostrar de qué estás hecha! Te envío toda la buena energía y la calma para que cada respuesta fluya. ¡Mucha, mucha suerte! ✅",
+                    "¡Eres una genio en potencia**! Visualiza tu éxito, mantén la calma y verás cómo superas cualquier obstáculo. ¡Tú eres capaz! 🧠",
+                    "Cada pregunta es una oportunidad para **demostrar tu valía. ¡No te rindas, persiste y triunfa! ¡El éxito te espera al final del camino! 🏆",
+                    "¡No existe nada imposible cuando tienes la determinación que tú posees! Esta semana decisiva será el testimonio de tu grandeza. ¡Confía en tu poder! 💫",
+
+                    "Recuerda: lo imposible es solo una palabra, tú tienes la llave para abrir cualquier puerta. ¡Esta semana decisiva será tu momento de brillar! ✨",
+
+                    "¡Para ti no hay límites ni barreras imposibles de romper! Cada desafío de esta semana decisiva será una oportunidad para demostrar tu fortaleza. ¡Adelante, guerrera! 🔥",
+
+                    "Lo que otros llaman imposible, tú lo llamas oportunidad. Esta semana decisiva será la prueba de que cuando te lo propones, todo es posible. ¡Confía en ti! 🌟",
+
+                    "¡Imposible no está en tu vocabulario! Esta semana decisiva será el escenario perfecto para que demuestres que con pasión y esfuerzo, todo se puede lograr. ¡Eres imparable! 🚀",
+
+                    "Cada obstáculo aparentemente imposible se desvanece ante tu determinación. Esta semana decisiva será tu momento de gloria. ¡Tú tienes el poder! ⚡",
+
+                    "¡Borra la palabra 'imposible' de tu mente! Esta semana decisiva será la confirmación de que con tu talento y dedicación, puedes conquistar cualquier meta. ¡Eres extraordinaria! 🏆"
+                ],
+                jokes: [
+                {
+                    setup: "¡Prepárate para reírte!",
+                    punchline: "¿Qué le dice un semáforo a otro? ¡No me mires que me estoy cambiando!"
+                },
+                {
+                    setup: "Un chiste para mentes binarias:",
+                    punchline: "¿Por qué los programadores prefieren el modo oscuro? ¡Porque la luz atrae los 'bugs'!"
+                },
+                {
+                    setup: "Un chiste que entenderá un trabajador social:",
+                    punchline: "¿Cuál es el superhéroe favorito de un trabajador social? ¡Captain 'Capacity Building'!"
+                },
+                {
+                    setup: "¡Este te va a sacar una carcajada!",
+                    punchline: "¿Por qué el astronauta rompió con su novia? ¡Porque necesitaba espacio!"
+                },
+                {
+                    setup: "Un chiste para alegrarte el día:",
+                    punchline: "¿Qué hace una abeja en el gimnasio? ¡Zum-ba!"
+                },
+                {
+                    setup: "¡Cuidado, este es muy bueno!",
+                    punchline: "¿Por qué los pájaros no usan WhatsApp? ¡Porque ya tienen Twitter!"
+                },
+                {
+                    setup: "Uno más para mantener la sonrisa:",
+                    punchline: "¿Qué le dice una impresora a otra? ¿Esa hoja es tuya o es una copia?"
+                },
+                {
+                    setup: "¡Este te va a gustar!",
+                    punchline: "¿Por qué los programadores odian la naturaleza? ¡Porque tiene demasiados bugs y no hay documentación!"
+                },
+                {
+                    setup: "Un chiste de sistemas:",
+                    punchline: "¿Cuál es la diferencia entre un programador y un usuario? ¡El programador piensa que su código es perfecto, el usuario sabe que no funciona!"
+                },
+                {
+                    setup: "¡Prepárate para reírte!",
+                    punchline: "¿Por qué los trabajadores sociales son tan buenos en fiestas? ¡Porque saben cómo crear redes de apoyo!"
+                },
+                {
+                    setup: "Chiste de base de datos:",
+                    punchline: "¿Por qué rompieron el programador y la base de datos? ¡Porque no había relación!"
+                },
+                {
+                    setup: "¡Este es buenísimo!",
+                    punchline: "¿Qué hace un trabajador social en un concierto? ¡Evalúa la dinámica grupal!"
+                },
+                {
+                    setup: "Un clásico que no falla:",
+                    punchline: "¿Por qué los programadores confunden Halloween con Navidad? ¡Porque Oct 31 = Dec 25!"
+                },
+                {
+                    setup: "¡Cuidado, este es muy bueno!",
+                    punchline: "¿Cómo llama un programador a su perro? ¡JavaScript! Porque siempre está corriendo pero nunca hace lo que debe."
+                },
+                {
+                    setup: "Uno más para mantener la sonrisa:",
+                    punchline: "¿Por qué los trabajadores sociales son buenos en matemáticas? ¡Porque saben sumar esfuerzos y restar problemas!"
+                }
+                ]
+            };
+
+            // Transición del portal
+            enterPortalButton.addEventListener('click', () => {
+                portalScreen.classList.remove('active');
+                portalScreen.classList.add('hidden');
+                setTimeout(() => {
+                    mainKitScreen.classList.remove('hidden');
+                    mainKitScreen.classList.add('active');
+                    createParticles(10);
+                }, 600);
+            });
+
+            // Lógica de botones
+            actionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    contentType = button.dataset.type;
+                    initialKitMessage.style.display = 'none';
+                    mainKitTitle.textContent = contentType === 'success' ? '¡Tu Dosis de Ánimo!' : '¡Ríete a Carcajadas!';
+                    mainKitTitle.style.setProperty('--emoji', contentType === 'success' ? '🌟' : '😂');
+                    
+                    resultDisplay.classList.remove('hidden');
+                    resultDisplay.classList.add('visible');
+                    dynamicContent.innerHTML = '';
+                    nextPhraseButton.classList.add('hidden');
+
+                    currentContent = [...contents[contentType]].sort(() => 0.5 - Math.random());
+                    currentPhraseIndex = 0;
+                    displayNextContent();
+                    nextPhraseButton.classList.remove('hidden');
+                });
+            });
+
+            // Mostrar siguiente contenido
+            nextPhraseButton.addEventListener('click', () => {
+                if (currentPhraseIndex < currentContent.length) {
+                    displayNextContent();
+                }
+            });
+
+            function displayNextContent() {
+                if (currentPhraseIndex < currentContent.length) {
+                    dynamicContent.style.opacity = 0;
+                    setTimeout(() => {
+                        const item = currentContent[currentPhraseIndex];
+                        if (contentType === 'jokes') {
+                            dynamicContent.innerHTML = `<p>${item.setup}</p><p style="margin-top: 15px; font-weight: bold; font-size: 1.5em;">${item.punchline}</p>`;
+                        } else {
+                            dynamicContent.innerHTML = `<p>${item}</p>`;
+                        }
+                        currentPhraseIndex++;
+                        dynamicContent.style.opacity = 1;
+                        if (currentPhraseIndex === currentContent.length) {
+                            nextPhraseButton.textContent = "¡Eso es todo!";
+                            createConfettiBurst(100);
+                            setTimeout(() => nextPhraseButton.classList.add('hidden'), 2000);
+                        } else {
+                            nextPhraseButton.textContent = "Siguiente";
+                        }
+                    }, 400);
+                }
+            }
+
+            // Confeti mejorado
+            function createConfettiBurst(count) {
+                const colors = ['#ff6b6b', '#ff8e53', '#81ecec', '#74b9ff', '#a29bfe', '#00b894', '#fd79a8'];
+                const shapes = ['circle', 'square', 'triangle', 'heart', 'star'];
+
+                for (let i = 0; i < count; i++) {
+                    const confetti = document.createElement('div');
+                    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    confetti.classList.add('confetti', shape);
+                    if (shape === 'triangle') {
+                        confetti.style.borderBottomColor = color;
+                    } else if (shape !== 'heart' && shape !== 'star') {
+                        confetti.style.backgroundColor = color;
+                    }
+
+                    confetti.style.left = `${Math.random() * 100}vw`;
+                    confetti.style.top = `${Math.random() * 100}vh`;
+                    document.body.appendChild(confetti);
+
+                    const angle = Math.random() * 360;
+                    const distance = Math.random() * 200 + 50;
+                    const duration = Math.random() * 2000 + 2000;
+
+                    confetti.animate([
+                        { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
+                        { transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+                    ], {
+                        duration,
+                        easing: 'ease-out'
+                    }).onfinish = () => confetti.remove();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
