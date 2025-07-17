@@ -3,688 +3,456 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¡Una Sorpresa Extraordinaria!</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Acuario Virtual 3D</title>
     <style>
-        /* --- General Styles --- */
-        body {
-            font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            position: relative;
-            background-color: #e6f0fa;
-            color: #2d3436;
-            text-align: center;
-            transition: background-color 1.5s ease;
-            /* REMOVIDO: overflow: hidden - esto bloqueaba el scroll */
-            min-height: 100vh;
+            box-sizing: border-box;
         }
 
-        /* --- Dynamic Background with Particles --- */
-        .bg-gradient-overlay {
-            position: fixed;
+        body {
+            background: linear-gradient(135deg, #001122, #003366);
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        .aquarium {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: linear-gradient(to bottom, 
+                rgba(0, 150, 255, 0.3) 0%,
+                rgba(0, 100, 200, 0.5) 30%,
+                rgba(0, 70, 150, 0.7) 70%,
+                rgba(0, 40, 100, 0.9) 100%);
+            overflow: hidden;
+        }
+
+        .water-surface {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(108, 92, 231, 0.6), rgba(253, 121, 168, 0.6));
-            animation: gradientAnim 12s ease infinite alternate;
-            z-index: -1;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100"><path d="M0 50 Q250 20 500 50 T1000 50 V0 H0 Z" fill="rgba(255,255,255,0.1)"/></svg>') repeat-x;
+            animation: waves 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes waves {
+            0%, 100% { transform: translateX(0) scaleY(1); }
+            50% { transform: translateX(-50px) scaleY(1.2); }
+        }
+
+        .fish {
+            position: absolute;
+            font-size: 30px;
+            animation: swim 20s linear infinite;
+            transform-origin: center;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+        }
+
+        .fish.tropical1 { color: #FF6B6B; }
+        .fish.tropical2 { color: #4ECDC4; }
+        .fish.tropical3 { color: #FFE66D; }
+        .fish.tropical4 { color: #FF8E53; }
+        .fish.tropical5 { color: #95E1D3; }
+        .fish.tropical6 { color: #A8E6CF; }
+
+        @keyframes swim {
+            0% { 
+                transform: translateX(-100px) translateY(0px) scaleX(1);
+            }
+            25% { 
+                transform: translateX(25vw) translateY(-20px) scaleX(1);
+            }
+            50% { 
+                transform: translateX(50vw) translateY(10px) scaleX(1);
+            }
+            75% { 
+                transform: translateX(75vw) translateY(-15px) scaleX(1);
+            }
+            100% { 
+                transform: translateX(calc(100vw + 100px)) translateY(5px) scaleX(1);
+            }
+        }
+
+        .fish.reverse {
+            animation: swim-reverse 25s linear infinite;
+        }
+
+        @keyframes swim-reverse {
+            0% { 
+                transform: translateX(calc(100vw + 100px)) translateY(0px) scaleX(-1);
+            }
+            25% { 
+                transform: translateX(75vw) translateY(15px) scaleX(-1);
+            }
+            50% { 
+                transform: translateX(50vw) translateY(-10px) scaleX(-1);
+            }
+            75% { 
+                transform: translateX(25vw) translateY(20px) scaleX(-1);
+            }
+            100% { 
+                transform: translateX(-100px) translateY(-5px) scaleX(-1);
+            }
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -20px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.3));
+            animation: float 6s ease-in-out infinite;
             opacity: 0.7;
         }
 
-        @keyframes gradientAnim {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 100% 100%; }
-        }
-
-        .particle {
-            position: fixed;
-            width: 6px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            opacity: 0.4;
-            animation: float 10s infinite linear;
-            z-index: -1;
-        }
-
         @keyframes float {
-            0% { transform: translateY(100vh) scale(1); opacity: 0.4; }
-            100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(-50vh) scale(1.2);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(-100vh) scale(0.8);
+                opacity: 0;
+            }
         }
 
-        /* --- Screen Transitions --- */
-        .screen {
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-            position: relative;
-            transition: opacity 0.8s ease, transform 0.8s ease;
-            z-index: 10;
-        }
-
-        .screen.hidden {
-            opacity: 0;
-            pointer-events: none;
+        .seaweed {
             position: absolute;
-            top: 0;
-            left: 0;
-            transform: translateY(50vh);
+            bottom: 0;
+            width: 30px;
+            height: 200px;
+            background: linear-gradient(to top, #2D5A27, #4A7C59);
+            border-radius: 15px 15px 0 0;
+            animation: sway 4s ease-in-out infinite;
+            transform-origin: bottom center;
         }
 
-        .screen.active {
-            opacity: 1;
-            pointer-events: all;
-            transform: translateY(0);
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
         }
 
-        /* --- Portal Screen Styles --- */
-        #portal-screen {
-            background: rgba(178, 224, 254, 0.3);
+        .seaweed::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 150px;
+            background: linear-gradient(to top, #2D5A27, #4A7C59);
+            border-radius: 10px 10px 0 0;
+            left: 25px;
+            bottom: 0;
+            animation: sway-delayed 4s ease-in-out infinite 0.5s;
+            transform-origin: bottom center;
         }
 
-        .portal-container {
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 40px 20px;
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            max-width: 95%;
-            width: 100%;
-            max-width: 500px;
-            box-sizing: border-box;
-            animation: portalFadeIn 1.5s ease-out;
+        @keyframes sway-delayed {
+            0%, 100% { transform: rotate(5deg); }
+            50% { transform: rotate(-5deg); }
         }
 
-        @keyframes portalFadeIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .portal-container h1 {
-            font-size: 2.2em;
-            margin-bottom: 20px;
-        }
-
-        .portal-container p {
-            font-size: 1.1em;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .portal-effect {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 30px auto 0;
-            border-radius: 50%;
-            background: radial-gradient(circle, #8338ec 0%, #3a0ca3 100%);
-            box-shadow: 0 0 30px #8338ec, 0 0 60px #3a0ca3;
-            animation: pulse 2s infinite alternate;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
+        .coral {
+            position: absolute;
+            bottom: 0;
+            width: 40px;
+            height: 60px;
+            background: radial-gradient(circle, #FF7F7F, #FF4757);
+            border-radius: 20px 20px 0 0;
+            animation: pulse 3s ease-in-out infinite;
         }
 
         @keyframes pulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.05); box-shadow: 0 0 40px #8338ec, 0 0 80px #3a0ca3; }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
-        .portal-button {
-            background-color: #ffbe0b;
-            color: #333;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 40px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .portal-button:hover {
-            background-color: #fb8500;
-            transform: scale(1.05);
-            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        /* --- Main Kit Screen Styles --- */
-        #main-kit-screen {
-            align-items: flex-start;
-            padding-top: 40px;
-        }
-
-        #main-kit-screen .card {
-            background: linear-gradient(135deg, #81ecec, #ff7675);
-            padding: 30px 20px;
-            border-radius: 20px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-            max-width: 95%;
-            width: 100%;
-            max-width: 650px;
-            box-sizing: border-box;
-            border: 2px solid rgba(255, 255, 255, 0.6);
-            animation: cardPop 0.5s ease-out;
-        }
-
-        @keyframes cardPop {
-            from { transform: scale(0.9); opacity: 0.7; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        #main-kit-screen h1 {
-            color: #2d3436;
-            font-size: 2.2em;
-            margin-bottom: 15px;
-            position: relative;
-            display: inline-block;
-        }
-
-        #main-kit-screen h1::after {
-            content: '🌟';
-            font-size: 0.7em;
+        .coral::before {
+            content: '';
             position: absolute;
-            margin-left: 10px;
-            animation: emojiWiggle 2s infinite;
+            width: 25px;
+            height: 40px;
+            background: radial-gradient(circle, #FF6B6B, #FF3742);
+            border-radius: 12px 12px 0 0;
+            left: 30px;
+            bottom: 0;
+            animation: pulse 3s ease-in-out infinite 1s;
         }
 
-        @keyframes emojiWiggle {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(10deg); }
-            75% { transform: rotate(-10deg); }
-        }
-
-        #initialKitMessage {
-            font-size: 1.1em;
-            line-height: 1.7;
-            color: #2d3436;
-            margin-bottom: 25px;
-            animation: fadeInText 1s ease;
-        }
-
-        @keyframes fadeInText {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .action-button {
-            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
-            color: white;
-            padding: 15px 25px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            transform: perspective(500px) translateZ(0);
+        .sand {
+            position: absolute;
+            bottom: 0;
             width: 100%;
+            height: 100px;
+            background: linear-gradient(to top, #F4A460, #DEB887);
+            border-radius: 0 0 50% 50% / 0 0 100px 100px;
         }
 
-        .action-button:hover {
-            transform: perspective(500px) translateZ(10px) rotate(1deg);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(45deg, #ff8e53, #ff6b6b);
-        }
-
-        .action-button[data-type="jokes"] {
-            background: linear-gradient(45deg, #00cec9, #0984e3);
-        }
-
-        .action-button[data-type="jokes"]:hover {
-            background: linear-gradient(45deg, #0984e3, #00cec9);
-        }
-
-        .result-display {
-            background: rgba(255, 255, 255, 0.85);
-            border: 2px solid #81ecec;
-            border-radius: 20px;
-            padding: 25px;
-            margin-top: 25px;
-            min-height: 120px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            transition: all 0.6s ease;
-            transform: scale(0.9);
-            opacity: 0;
-        }
-
-        .result-display.visible {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .result-display.hidden {
-            opacity: 0;
-            height: 0;
-            padding: 0;
-            margin: 0;
-            border: none;
+        .light-ray {
+            position: absolute;
+            top: 0;
+            width: 100px;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                rgba(255, 255, 255, 0.3) 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0.05) 100%);
+            animation: light-shimmer 10s ease-in-out infinite;
             pointer-events: none;
         }
 
-        #dynamicContent {
-            font-size: 1.2em;
-            color: #2d3436;
-            margin-bottom: 15px;
-            transition: all 0.4s ease;
-            text-align: center;
+        @keyframes light-shimmer {
+            0%, 100% { opacity: 0.5; transform: translateX(0px) rotate(5deg); }
+            50% { opacity: 0.8; transform: translateX(20px) rotate(-5deg); }
         }
 
-        .next-button {
-            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+        .controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
             color: white;
-            padding: 12px 25px;
+            font-family: Arial, sans-serif;
+        }
+
+        .controls button {
+            background: rgba(255, 255, 255, 0.2);
             border: none;
-            border-radius: 25px;
-            font-size: 1.1em;
-            font-weight: 600;
+            color: white;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
+            backdrop-filter: blur(10px);
             transition: all 0.3s ease;
         }
 
-        .next-button:hover {
-            background: linear-gradient(45deg, #a29bfe, #6c5ce7);
+        .controls button:hover {
+            background: rgba(255, 255, 255, 0.3);
             transform: scale(1.05);
         }
 
-        .next-button.hidden {
-            display: none;
-        }
-
-        .signature {
-            margin-top: 30px;
-            font-style: italic;
-            color: #636e72;
-            font-size: 0.95em;
-        }
-
-        /* --- Confetti Styles --- */
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: #ffd700;
-            border-radius: 50%;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 1000;
-        }
-
-        .confetti.square { border-radius: 0; }
-        .confetti.triangle {
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-bottom: 10px solid;
-            background: transparent;
-        }
-        .confetti.heart::before {
-            content: '❤️';
+        .fish-info {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
             font-size: 14px;
-            background: transparent;
-        }
-        .confetti.star::before {
-            content: '⭐';
-            font-size: 14px;
-            background: transparent;
-            color: #f1c40f;
-        }
-
-        /* --- Responsive Design --- */
-        @media (max-width: 768px) {
-            .portal-container {
-                padding: 30px 15px;
-                margin: 10px;
-            }
-
-            .portal-container h1 {
-                font-size: 1.8em;
-            }
-
-            .portal-container p {
-                font-size: 1em;
-            }
-
-            .portal-effect {
-                width: 100px;
-                height: 100px;
-            }
-
-            .portal-button {
-                font-size: 1em;
-                padding: 10px 20px;
-            }
-
-            #main-kit-screen h1 {
-                font-size: 1.8em;
-            }
-
-            #main-kit-screen .card {
-                padding: 25px 15px;
-                margin: 10px;
-            }
-
-            #initialKitMessage {
-                font-size: 1em;
-            }
-
-            .action-button {
-                font-size: 1em;
-                padding: 12px 20px;
-            }
-
-            #dynamicContent {
-                font-size: 1.1em;
-            }
-
-            .next-button {
-                font-size: 1em;
-                padding: 10px 20px;
-            }
-
-            .signature {
-                font-size: 0.9em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .screen {
-                padding: 15px;
-            }
-
-            .portal-container h1 {
-                font-size: 1.6em;
-            }
-
-            #main-kit-screen h1 {
-                font-size: 1.6em;
-            }
-
-            .portal-effect {
-                width: 80px;
-                height: 80px;
-            }
-
-            .portal-button {
-                font-size: 0.9em;
-                padding: 8px 16px;
-            }
-
-            #dynamicContent {
-                font-size: 1em;
-            }
-
-            .action-button {
-                font-size: 0.9em;
-                padding: 10px 15px;
-            }
-
-            .next-button {
-                font-size: 0.9em;
-                padding: 8px 16px;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="bg-gradient-overlay"></div>
-
-    <div id="portal-screen" class="screen active">
-        <div class="portal-container">
-            <h1>¡Te tengo una sorpresa!</h1>
-            <p>Haz clic para entrar al portal y descubrir un mensaje especial.</p>
-            <div class="portal-effect">
-                <button id="enter-portal-button" class="portal-button">ENTRAR</button>
-            </div>
+    <div class="aquarium" id="aquarium">
+        <div class="water-surface"></div>
+        <div class="sand"></div>
+        
+        <!-- Rayos de luz -->
+        <div class="light-ray" style="left: 20%; animation-delay: 0s;"></div>
+        <div class="light-ray" style="left: 60%; animation-delay: 3s;"></div>
+        <div class="light-ray" style="left: 80%; animation-delay: 6s;"></div>
+        
+        <!-- Controles -->
+        <div class="controls">
+            <button onclick="addFish()">🐠 Agregar Pez</button>
+            <button onclick="addBubbles()">💧 Más Burbujas</button>
+            <button onclick="changeTime()">🌅 Cambiar Hora</button>
         </div>
-    </div>
-
-    <div id="main-kit-screen" class="screen hidden">
-        <div class="card">
-            <h1>¡Aquí está tu Dosis de Ánimo!</h1>
-            <p id="initialKitMessage">Sé que tienes una semana importante con tus exámenes. Quería enviarte algo para hacer tu día un poco más ligero y darte un empujón de energía.</p>
-            
-            <div class="button-container">
-                <button class="action-button" data-type="success">Estos son para tí</button>
-                <button class="action-button" data-type="jokes">Chistes Graciosos 😂</button>
-            </div>
-
-            <div id="resultDisplay" class="result-display hidden">
-                <p id="dynamicContent"></p>
-                <button id="nextPhraseButton" class="next-button hidden">Siguiente Frase</button>
-            </div>
-
-            <p class="signature">- Alguien que te desea lo mejor</p>
+        
+        <!-- Info del acuario -->
+        <div class="fish-info">
+            <strong>🐠 Acuario Virtual 3D</strong><br>
+            <span id="fishCount">Peces: 0</span><br>
+            <span id="timeInfo">Hora: Día</span><br>
+            <small>Haz clic para agregar peces y burbujas</small>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Crear partículas de fondo
-            function createParticles(count) {
-                for (let i = 0; i < count; i++) {
-                    const particle = document.createElement('div');
-                    particle.classList.add('particle');
-                    particle.style.left = `${Math.random() * 100}vw`;
-                    particle.style.animationDuration = `${Math.random() * 5 + 5}s`;
-                    particle.style.animationDelay = `${Math.random() * 5}s`;
-                    document.body.appendChild(particle);
-                    particle.addEventListener('animationend', () => particle.remove());
-                }
+        let fishCount = 0;
+        let isNight = false;
+        const fishEmojis = ['🐠', '🐟', '🦈', '🐡', '🦑', '🐙', '🦞', '🦀'];
+        const fishClasses = ['tropical1', 'tropical2', 'tropical3', 'tropical4', 'tropical5', 'tropical6'];
+
+        function createFish() {
+            const fish = document.createElement('div');
+            fish.className = `fish ${fishClasses[Math.floor(Math.random() * fishClasses.length)]}`;
+            fish.innerHTML = fishEmojis[Math.floor(Math.random() * fishEmojis.length)];
+            
+            // Posición aleatoria en Y
+            fish.style.top = Math.random() * 70 + 10 + '%';
+            
+            // Dirección aleatoria
+            if (Math.random() > 0.5) {
+                fish.classList.add('reverse');
             }
-            createParticles(20);
+            
+            // Tamaño aleatorio
+            fish.style.fontSize = (Math.random() * 20 + 25) + 'px';
+            
+            // Velocidad aleatoria
+            const duration = Math.random() * 15 + 15;
+            fish.style.animationDuration = duration + 's';
+            
+            return fish;
+        }
 
-            // Elementos del DOM
-            const portalScreen = document.getElementById('portal-screen');
-            const mainKitScreen = document.getElementById('main-kit-screen');
-            const enterPortalButton = document.getElementById('enter-portal-button');
-            const actionButtons = document.querySelectorAll('.action-button');
-            const resultDisplay = document.getElementById('resultDisplay');
-            const dynamicContent = document.getElementById('dynamicContent');
-            const nextPhraseButton = document.getElementById('nextPhraseButton');
-            const initialKitMessage = document.getElementById('initialKitMessage');
-            const mainKitTitle = document.querySelector('#main-kit-screen h1');
+        function addFish() {
+            const aquarium = document.getElementById('aquarium');
+            const fish = createFish();
+            aquarium.appendChild(fish);
+            fishCount++;
+            document.getElementById('fishCount').textContent = `Peces: ${fishCount}`;
+            
+            // Remover el pez después de la animación
+            setTimeout(() => {
+                if (fish.parentNode) {
+                    fish.parentNode.removeChild(fish);
+                    fishCount--;
+                    document.getElementById('fishCount').textContent = `Peces: ${fishCount}`;
+                }
+            }, 25000);
+        }
 
-            let currentPhraseIndex = 0;
-            let currentContent = [];
-            let contentType = '';
+        function createBubble() {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.style.left = Math.random() * 100 + '%';
+            bubble.style.width = bubble.style.height = Math.random() * 15 + 10 + 'px';
+            bubble.style.animationDelay = Math.random() * 2 + 's';
+            bubble.style.animationDuration = Math.random() * 4 + 4 + 's';
+            
+            return bubble;
+        }
 
-            const contents = {
-                success: [
-                    "¡Lo vas a lograr con creces! Toda tu dedicación y esfuerzo van a brillar en cada examen. ¡Confía en ti al máximo! 💪",
-                    "Recuerda que cada paso que has dado te ha preparado para este momento. ¡Tienes la inteligencia y la capacidad para superar cualquier desafío! ✨",
-                    "No solo vas a aprobar, ¡vas a sobresalir! Relájate, respira profundo y demuestra todo lo que sabes. ¡Eres imparable! 🚀",
-                    "Imagina esa increíble sensación de satisfacción al terminar. ¡Esa es tu recompensa por todo tu arduo trabajo! ¡A por todas, campeona! 🌟",
-                    "¡Este es tu momento para demostrar de qué estás hecha! Te envío toda la buena energía y la calma para que cada respuesta fluya. ¡Mucha, mucha suerte! ✅",
-                    "¡Eres una genio en potencia! Visualiza tu éxito, mantén la calma y verás cómo superas cualquier obstáculo. ¡Tú eres capaz! 🧠",
-                    "Cada pregunta es una oportunidad para demostrar tu valía. ¡No te rindas, persiste y triunfa! ¡El éxito te espera al final del camino! 🏆",
-                    "¡No existe nada imposible cuando tienes la determinación que tú posees! Esta semana decisiva será el testimonio de tu grandeza. ¡Confía en tu poder! 💫",
-                    "Recuerda: lo imposible es solo una palabra, tú tienes la llave para abrir cualquier puerta. ¡Esta semana decisiva será tu momento de brillar! ✨",
-                    "¡Para ti no hay límites ni barreras imposibles de romper! Cada desafío de esta semana decisiva será una oportunidad para demostrar tu fortaleza. ¡Adelante, guerrera! 🔥",
-                    "Lo que otros llaman imposible, tú lo llamas oportunidad. Esta semana decisiva será la prueba de que cuando te lo propones, todo es posible. ¡Confía en ti! 🌟",
-                    "¡Imposible no está en tu vocabulario! Esta semana decisiva será el escenario perfecto para que demuestres que con pasión y esfuerzo, todo se puede lograr. ¡Eres imparable! 🚀",
-                    "Cada obstáculo aparentemente imposible se desvanece ante tu determinación. Esta semana decisiva será tu momento de gloria. ¡Tú tienes el poder! ⚡",
-                    "¡Borra la palabra 'imposible' de tu mente! Esta semana decisiva será la confirmación de que con tu talento y dedicación, puedes conquistar cualquier meta. ¡Eres extraordinaria! 🏆"
-                ],
-                jokes: [
-                    {
-                        setup: "¡Prepárate para reírte!",
-                        punchline: "¿Qué le dice un semáforo a otro? ¡No me mires que me estoy cambiando!"
-                    },
-                    {
-                        setup: "Un chiste para mentes binarias:",
-                        punchline: "¿Por qué los programadores prefieren el modo oscuro? ¡Porque la luz atrae los 'bugs'!"
-                    },
-                    {
-                        setup: "Un chiste que entenderá un trabajador social:",
-                        punchline: "¿Cuál es el superhéroe favorito de un trabajador social? ¡Captain 'Capacity Building'!"
-                    },
-                    {
-                        setup: "¡Este te va a sacar una carcajada!",
-                        punchline: "¿Por qué el astronauta rompió con su novia? ¡Porque necesitaba espacio!"
-                    },
-                    {
-                        setup: "Un chiste para alegrarte el día:",
-                        punchline: "¿Qué hace una abeja en el gimnasio? ¡Zum-ba!"
-                    },
-                    {
-                        setup: "¡Cuidado, este es muy bueno!",
-                        punchline: "¿Por qué los pájaros no usan WhatsApp? ¡Porque ya tienen Twitter!"
-                    },
-                    {
-                        setup: "Uno más para mantener la sonrisa:",
-                        punchline: "¿Qué le dice una impresora a otra? ¿Esa hoja es tuya o es una copia?"
-                    },
-                    {
-                        setup: "¡Este te va a gustar!",
-                        punchline: "¿Por qué los programadores odian la naturaleza? ¡Porque tiene demasiados bugs y no hay documentación!"
-                    },
-                    {
-                        setup: "Un chiste de sistemas:",
-                        punchline: "¿Cuál es la diferencia entre un programador y un usuario? ¡El programador piensa que su código es perfecto, el usuario sabe que no funciona!"
-                    },
-                    {
-                        setup: "¡Prepárate para reírte!",
-                        punchline: "¿Por qué los trabajadores sociales son tan buenos en fiestas? ¡Porque saben cómo crear redes de apoyo!"
-                    },
-                    {
-                        setup: "Chiste de base de datos:",
-                        punchline: "¿Por qué rompieron el programador y la base de datos? ¡Porque no había relación!"
-                    },
-                    {
-                        setup: "¡Este es buenísimo!",
-                        punchline: "¿Qué hace un trabajador social en un concierto? ¡Evalúa la dinámica grupal!"
-                    },
-                    {
-                        setup: "Un clásico que no falla:",
-                        punchline: "¿Por qué los programadores confunden Halloween con Navidad? ¡Porque Oct 31 = Dec 25!"
-                    },
-                    {
-                        setup: "¡Cuidado, este es muy bueno!",
-                        punchline: "¿Cómo llama un programador a su perro? ¡JavaScript! Porque siempre está corriendo pero nunca hace lo que debe."
-                    },
-                    {
-                        setup: "Uno más para mantener la sonrisa:",
-                        punchline: "¿Por qué los trabajadores sociales son buenos en matemáticas? ¡Porque saben sumar esfuerzos y restar problemas!"
-                    }
-                ]
-            };
-
-            // Transición del portal
-            enterPortalButton.addEventListener('click', () => {
-                portalScreen.classList.remove('active');
-                portalScreen.classList.add('hidden');
+        function addBubbles() {
+            const aquarium = document.getElementById('aquarium');
+            for (let i = 0; i < 5; i++) {
                 setTimeout(() => {
-                    mainKitScreen.classList.remove('hidden');
-                    mainKitScreen.classList.add('active');
-                    createParticles(10);
-                }, 600);
-            });
-
-            // Lógica de botones
-            actionButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    contentType = button.dataset.type;
-                    initialKitMessage.style.display = 'none';
-                    mainKitTitle.textContent = contentType === 'success' ? '¡Tu Dosis de Ánimo!' : '¡Ríete a Carcajadas!';
+                    const bubble = createBubble();
+                    aquarium.appendChild(bubble);
                     
-                    resultDisplay.classList.remove('hidden');
-                    resultDisplay.classList.add('visible');
-                    dynamicContent.innerHTML = '';
-                    nextPhraseButton.classList.add('hidden');
-
-                    currentContent = [...contents[contentType]].sort(() => 0.5 - Math.random());
-                    currentPhraseIndex = 0;
-                    displayNextContent();
-                    nextPhraseButton.classList.remove('hidden');
-                });
-            });
-
-            // Mostrar siguiente contenido
-            nextPhraseButton.addEventListener('click', () => {
-                if (currentPhraseIndex < currentContent.length) {
-                    displayNextContent();
-                }
-            });
-
-            function displayNextContent() {
-                if (currentPhraseIndex < currentContent.length) {
-                    dynamicContent.style.opacity = 0;
+                    // Remover burbuja después de la animación
                     setTimeout(() => {
-                        const item = currentContent[currentPhraseIndex];
-                        if (contentType === 'jokes') {
-                            dynamicContent.innerHTML = `<p>${item.setup}</p><p style="margin-top: 15px; font-weight: bold; font-size: 1.2em;">${item.punchline}</p>`;
-                        } else {
-                            dynamicContent.innerHTML = `<p>${item}</p>`;
+                        if (bubble.parentNode) {
+                            bubble.parentNode.removeChild(bubble);
                         }
-                        currentPhraseIndex++;
-                        dynamicContent.style.opacity = 1;
-                        if (currentPhraseIndex === currentContent.length) {
-                            nextPhraseButton.textContent = "¡Eso es todo!";
-                            createConfettiBurst(100);
-                            setTimeout(() => nextPhraseButton.classList.add('hidden'), 2000);
-                        } else {
-                            nextPhraseButton.textContent = "Siguiente";
-                        }
-                    }, 400);
-                }
+                    }, 8000);
+                }, i * 200);
             }
+        }
 
-            // Confeti mejorado
-            function createConfettiBurst(count) {
-                const colors = ['#ff6b6b', '#ff8e53', '#81ecec', '#74b9ff', '#a29bfe', '#00b894', '#fd79a8'];
-                const shapes = ['circle', 'square', 'triangle', 'heart', 'star'];
+        function createSeaweed() {
+            const seaweed = document.createElement('div');
+            seaweed.className = 'seaweed';
+            seaweed.style.left = Math.random() * 90 + '%';
+            seaweed.style.height = Math.random() * 100 + 150 + 'px';
+            seaweed.style.animationDelay = Math.random() * 2 + 's';
+            return seaweed;
+        }
 
-                for (let i = 0; i < count; i++) {
-                    const confetti = document.createElement('div');
-                    const shape = shapes[Math.floor(Math.random() * shapes.length)];
-                    const color = colors[Math.floor(Math.random() * colors.length)];
+        function createCoral() {
+            const coral = document.createElement('div');
+            coral.className = 'coral';
+            coral.style.left = Math.random() * 85 + '%';
+            coral.style.animationDelay = Math.random() * 3 + 's';
+            return coral;
+        }
+
+        function changeTime() {
+            const aquarium = document.getElementById('aquarium');
+            isNight = !isNight;
+            
+            if (isNight) {
+                aquarium.style.background = 'linear-gradient(to bottom, rgba(0, 20, 40, 0.5), rgba(0, 10, 30, 0.8), rgba(0, 5, 20, 0.9), rgba(0, 0, 10, 1))';
+                document.getElementById('timeInfo').textContent = 'Hora: Noche';
+            } else {
+                aquarium.style.background = 'linear-gradient(to bottom, rgba(0, 150, 255, 0.3), rgba(0, 100, 200, 0.5), rgba(0, 70, 150, 0.7), rgba(0, 40, 100, 0.9))';
+                document.getElementById('timeInfo').textContent = 'Hora: Día';
+            }
+        }
+
+        // Inicializar el acuario
+        function initAquarium() {
+            const aquarium = document.getElementById('aquarium');
+            
+            // Agregar algas
+            for (let i = 0; i < 6; i++) {
+                setTimeout(() => {
+                    aquarium.appendChild(createSeaweed());
+                }, i * 500);
+            }
+            
+            // Agregar corales
+            for (let i = 0; i < 4; i++) {
+                setTimeout(() => {
+                    aquarium.appendChild(createCoral());
+                }, i * 700);
+            }
+            
+            // Agregar peces iniciales
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    addFish();
+                }, i * 1000);
+            }
+            
+            // Burbujas automáticas
+            setInterval(addBubbles, 3000);
+            
+            // Peces automáticos
+            setInterval(addFish, 5000);
+        }
+
+        // Agregar peces al hacer clic
+        document.getElementById('aquarium').addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON') return;
+            
+            const fish = createFish();
+            fish.style.left = e.clientX + 'px';
+            fish.style.top = e.clientY + 'px';
+            fish.style.animationDuration = '0.5s';
+            fish.style.animation = 'none';
+            
+            setTimeout(() => {
+                fish.style.animation = '';
+                fish.style.animationDuration = Math.random() * 15 + 15 + 's';
+            }, 500);
+            
+            this.appendChild(fish);
+            fishCount++;
+            document.getElementById('fishCount').textContent = `Peces: ${fishCount}`;
+            
+            // Crear burbujas en el clic
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const bubble = createBubble();
+                    bubble.style.left = e.clientX + Math.random() * 50 - 25 + 'px';
+                    bubble.style.bottom = (window.innerHeight - e.clientY) + 'px';
+                    this.appendChild(bubble);
                     
-                    confetti.classList.add('confetti', shape);
-                    if (shape === 'triangle') {
-                        confetti.style.borderBottomColor = color;
-                    } else if (shape !== 'heart' && shape !== 'star') {
-                        confetti.style.backgroundColor = color;
-                    }
-
-                    confetti.style.left = `${Math.random() * 100}vw`;
-                    confetti.style.top = `${Math.random() * 100}vh`;
-                    document.body.appendChild(confetti);
-
-                    const angle = Math.random() * 360;
-                    const distance = Math.random() * 200 + 50;
-                    const duration = Math.random() * 2000 + 2000;
-
-                    confetti.animate([
-                        { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
-                        { transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
-                    ], {
-                        duration,
-                        easing: 'ease-out'
-                    }).onfinish = () => confetti.remove();
-                }
+                    setTimeout(() => {
+                        if (bubble.parentNode) {
+                            bubble.parentNode.removeChild(bubble);
+                        }
+                    }, 8000);
+                }, i * 100);
             }
         });
+
+        // Inicializar cuando cargue la página
+        window.addEventListener('load', initAquarium);
     </script>
 </body>
 </html>
